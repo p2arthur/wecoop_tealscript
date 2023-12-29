@@ -1,0 +1,48 @@
+{
+  "name": "Airdrop",
+  "desc": "",
+  "methods": [
+    {
+      "name": "createApplication",
+      "args": [
+        {
+          "name": "airdropValue",
+          "type": "uint64",
+          "desc": ""
+        }
+      ],
+      "desc": "",
+      "returns": {
+        "type": "void",
+        "desc": ""
+      }
+    },
+    {
+      "name": "getAirdropValue",
+      "args": [],
+      "desc": "",
+      "returns": {
+        "type": "uint64",
+        "desc": ""
+      }
+    },
+    {
+      "name": "getAirdropSubscribers",
+      "args": [],
+      "desc": "",
+      "returns": {
+        "type": "address[]",
+        "desc": ""
+      }
+    },
+    {
+      "name": "subscribeToList",
+      "args": [],
+      "desc": "",
+      "returns": {
+        "type": "address[]",
+        "desc": ""
+      }
+    }
+  ]
+}

@@ -1,10 +1,11 @@
 import { describe, test, expect, beforeAll, beforeEach } from '@jest/globals';
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing';
-import { TealscriptClient } from '../contracts/clients/TealscriptClient';
+import { AirdropClient } from '../contracts/clients/AirdropClient';
+import { equal } from 'assert';
 
 const fixture = algorandFixture();
 
-let appClient: TealscriptClient;
+let appClient: AirdropClient;
 
 describe('Tealscript', () => {
   beforeEach(fixture.beforeEach);
@@ -13,7 +14,7 @@ describe('Tealscript', () => {
     await fixture.beforeEach();
     const { algod, testAccount } = fixture.context;
 
-    appClient = new TealscriptClient(
+    appClient = new AirdropClient(
       {
         sender: testAccount,
         resolveBy: 'id',
@@ -22,20 +23,26 @@ describe('Tealscript', () => {
       algod
     );
 
-    await appClient.create.createApplication({});
+    await appClient.create.createApplication({ airdropValue: 1000 });
   });
 
-  test('sum', async () => {
-    const a = 13;
-    const b = 37;
-    const sum = await appClient.doMath({ a, b, operation: 'sum' });
-    expect(sum.return?.valueOf()).toBe(BigInt(a + b));
+  test('get Airdrop value', async () => {
+    const airdropValue = await appClient.getAirdropValue({});
+    expect(airdropValue.return?.valueOf()).toBe(BigInt(1000));
   });
 
-  test('difference', async () => {
-    const a = 13;
-    const b = 37;
-    const diff = await appClient.doMath({ a, b, operation: 'difference' });
-    expect(diff.return?.valueOf()).toBe(BigInt(a >= b ? a - b : b - a));
+  test('getAirdropSubscribers', async () => {
+    try {
+      const airdropSubscribers = await appClient.getAirdropSubscribers({});
+      expect(airdropSubscribers.return).toEqual([]);
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
+  test('Subscribe to airdrop', async () => {
+    const airdropSubscribersList = await appClient.subscribeToList({});
+    console.log('airdrop subscibers list', airdropSubscribersList.return);
+    expect(airdropSubscribersList.return?.valueOf()).toHaveLength(1);
   });
 });
